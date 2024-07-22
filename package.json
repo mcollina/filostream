@@ -1,0 +1,24 @@
+{
+  "name": "filostream",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "eslint && node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mcollina/filostream.git"
+  },
+  "keywords": [],
+  "author": "Matteo Collina <hello@matteocollina.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mcollina/filostream/issues"
+  },
+  "homepage": "https://github.com/mcollina/filostream#readme",
+  "devDependencies": {
+    "eslint": "^9.7.0",
+    "neostandard": "^0.11.1"
+  }
+}
