@@ -28,6 +28,45 @@ describe('MessagePortStream', () => {
     ])
   })
 
+  it('should pass through errors from Readable to Writable', async (t) => {
+    t.plan(1)
+    const { port1, port2 } = new MessageChannel()
+    const worker = new Worker(join(__dirname, '..', 'fixtures', 'messageportstream-worker.js'), {
+      workerData: {
+        port: port2,
+        expected: ['errornow'],
+      },
+      transferList: [port2],
+    })
+    const writable = new MessagePortWritable(port1)
+
+    writable.write('errornow')
+
+    const [err] = await once(writable, 'error')
+    t.assert.strictEqual(err.message, 'errornow')
+
+    await once(worker, 'exit')
+  })
+
+  it('should pass through errors from Writable to Readable', async (t) => {
+    t.plan(1)
+    const { port1, port2 } = new MessageChannel()
+    const worker = new Worker(join(__dirname, '..', 'fixtures', 'messageportstream-worker.js'), {
+      workerData: {
+        port: port2,
+        expected: ['errornow'],
+      },
+      transferList: [port2],
+    })
+    const writable = new MessagePortWritable(port1)
+    writable.on('error', (err) => {
+      t.assert.strictEqual(err.message, 'errornow')
+    })
+    writable.destroy(new Error('errornow'))
+
+    await once(worker, 'exit')
+  })
+
   it('should support backpressure', async (t) => {
     t.plan(62)
 

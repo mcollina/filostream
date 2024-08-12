@@ -21,13 +21,21 @@ function run () {
       if (chunk !== expectedChunk) {
         throw new Error(`Expected ${expectedChunk}, got ${chunk}`)
       }
+
+      if (chunk === 'errornow') {
+        readable.destroy(new Error('errornow'))
+      }
     }
   })
 }
 
-run()
+readable.on('error', () => {
+  // ignore error
+})
 
 readable.on('close', () => {
   // This exists the worker thread
   process.exit(0)
 })
+
+run()
