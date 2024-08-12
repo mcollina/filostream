@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "eslint && c8 node --test"
+    "test": "eslint && c8 node --test test/*.test.js"
   },
   "repository": {
     "type": "git",
